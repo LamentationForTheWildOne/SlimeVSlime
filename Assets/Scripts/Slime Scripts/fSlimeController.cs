@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class fSlimeController : MonoBehaviour
 {
-    public GameManager GameManager;
+    public GameObject GameManager;
     public bool held = false;
     public bool active = false;
     public GameObject hoverCell;
@@ -14,6 +14,7 @@ public class fSlimeController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameManager = GameObject.Find("GameManager");
     }
 
     // Update is called once per frame

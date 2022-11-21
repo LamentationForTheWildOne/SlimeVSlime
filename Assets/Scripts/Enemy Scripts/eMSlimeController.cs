@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class eMSlimeController : MonoBehaviour
 {
+    public GameObject GameManager;
     public int spd = 2;
     public int hp = 10;
     public int dmg = 2;
@@ -14,6 +15,7 @@ public class eMSlimeController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameManager = GameObject.Find("GameManager");
         StartCoroutine(MoveDelay());
     }
 
