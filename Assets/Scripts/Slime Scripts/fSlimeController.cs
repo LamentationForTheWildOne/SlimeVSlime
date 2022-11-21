@@ -11,6 +11,7 @@ public class fSlimeController : MonoBehaviour
     public float aspd = 2;
     public bool canshoot = true;
     public GameObject Bullet;
+    public int hp = 10;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,12 +21,12 @@ public class fSlimeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     void FixedUpdate()
     {
-        RaycastHit2D hit = Physics2D.Raycast(new Vector3(transform.position.x + 0.6f, transform.position.y), -Vector2.left,20);
+        RaycastHit2D hit = Physics2D.Raycast(new Vector3(transform.position.x + 0.6f, transform.position.y), -Vector2.left, 20);
         Debug.DrawRay(new Vector3(transform.position.x + 0.6f, transform.position.y), -Vector2.left * 20, Color.green);
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if (held) {
@@ -127,6 +128,15 @@ public class fSlimeController : MonoBehaviour
     {
         yield return new WaitForSeconds(aspd);
         canshoot = true;
+    }
+
+    public void takeDmg(int damage)
+    {
+        hp -= damage;
+        if (hp <= 0) 
+        {
+            Destroy(gameObject);
+        }
     }
 
 

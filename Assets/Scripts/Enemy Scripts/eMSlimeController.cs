@@ -9,8 +9,11 @@ public class eMSlimeController : MonoBehaviour
     public int hp = 10;
     public int dmg = 2;
     public int waitSec = 3;
+    public int attSec = 2;
     public bool canMove = false;
     public bool pastWait = false;
+    public bool attacking = true;
+    public RaycastHit2D hit;
 
     // Start is called before the first frame update
     void Start()
@@ -27,8 +30,8 @@ public class eMSlimeController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        RaycastHit2D hit = Physics2D.Raycast(new Vector3(transform.position.x - 0.6f, transform.position.y), Vector2.left,0.4f);
-        Debug.DrawRay(new Vector3(transform.position.x - 0.6f, transform.position.y), Vector2.left * 0.4f, Color.red);
+        hit = Physics2D.Raycast(new Vector3(transform.position.x - 0.8f, transform.position.y), Vector2.left,0.4f);
+        Debug.DrawRay(new Vector3(transform.position.x - 0.8f, transform.position.y), Vector2.left * 0.4f, Color.red);
 
         if (pastWait) {
             canMove = true;
@@ -40,6 +43,11 @@ public class eMSlimeController : MonoBehaviour
             {
                 canMove = false;
                 Debug.Log("HIT SOMETHING");
+                if (attacking) {
+                    Attack();
+                    attacking = false;
+                    StartCoroutine(AttackDelay());
+                }
             }
             Debug.Log("SEE SOMETHING");
         }
@@ -65,10 +73,32 @@ public class eMSlimeController : MonoBehaviour
         Debug.Log("ow");
     }
 
+    void Attack()
+    {
+
+        if (hit.collider != null)
+        {
+            if (hit.transform.CompareTag("Slime"))
+            {
+                var target = hit.transform;
+                target.BroadcastMessage("takeDmg", dmg);
+            }
+
+        }
+    }
+
+
+
     IEnumerator MoveDelay()
     {
         yield return new WaitForSeconds(waitSec);
         canMove = true;
         pastWait = true;
+    }
+
+    IEnumerator AttackDelay()
+    {
+        yield return new WaitForSeconds(attSec);
+        attacking = true;
     }
 }
