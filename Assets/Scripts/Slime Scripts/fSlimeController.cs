@@ -12,6 +12,7 @@ public class fSlimeController : MonoBehaviour
     public bool canshoot = true;
     public GameObject Bullet;
     public int hp = 10;
+    public GameObject[] gos;
     // Start is called before the first frame update
     void Start()
     {
@@ -80,10 +81,14 @@ public class fSlimeController : MonoBehaviour
                 {
                     if (Vector2.Distance(transform.position, hoverCell.transform.position) < 1)
                     {
-                        held = false;
-                        GameManager.GetComponent<GameManager>().holding = false;
-                        active = true;
-                        transform.position = hoverCell.transform.position;
+                        if (hoverCell.GetComponent<CellManage>().filled == false)
+                        {
+                            held = false;
+                            GameManager.GetComponent<GameManager>().holding = false;
+                            active = true;
+                            transform.position = hoverCell.transform.position;
+                            hoverCell.GetComponent<CellManage>().filled = true;
+                        }
                     }
 
 
@@ -102,7 +107,7 @@ public class fSlimeController : MonoBehaviour
 
     public GameObject FindClosestCell()
     {
-        GameObject[] gos;
+        
         gos = GameObject.FindGameObjectsWithTag("Cell");
         GameObject closest = null;
         float distance = Mathf.Infinity;

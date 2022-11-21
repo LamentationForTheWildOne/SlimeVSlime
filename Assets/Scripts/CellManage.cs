@@ -5,6 +5,7 @@ using UnityEngine;
 public class CellManage : MonoBehaviour
 {
     public GameObject hover;
+    public bool filled = false;
     // Start is called before the first frame update
     void Start()
     {
