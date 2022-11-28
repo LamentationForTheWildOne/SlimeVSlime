@@ -7,7 +7,7 @@ TagManager:
   - Cell
   - Enemy
   - Slime
-  - fBullet
+  - Bullet
   layers:
   - Default
   - TransparentFX
@@ -15,8 +15,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Slimes
+  - Enemy
   - 
   - 
   - 
