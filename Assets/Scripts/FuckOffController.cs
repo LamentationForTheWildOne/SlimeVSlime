@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class fBulletController : MonoBehaviour
+public class FuckOffController : MonoBehaviour
 {
-    public int dmg = 2;
-    public int spd = 2;
+    public GameManager GameManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,8 +17,11 @@ public class fBulletController : MonoBehaviour
         
     }
 
-    private void FixedUpdate()
+    private void OnTriggerEnter2D(Collider2D col)
     {
-        transform.position = new Vector3(transform.position.x + (spd * Time.deltaTime), transform.position.y);
+        if (col.CompareTag("Enemy")){
+            GameManager.GetComponent<GameManager>().health -= 1;
+        } 
+        Destroy(col.gameObject);
     }
 }

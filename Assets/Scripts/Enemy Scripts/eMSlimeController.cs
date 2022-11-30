@@ -30,6 +30,8 @@ public class eMSlimeController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        
+         
         hit = Physics2D.Raycast(new Vector3(transform.position.x - 0.8f, transform.position.y), Vector2.left,0.4f);
         Debug.DrawRay(new Vector3(transform.position.x - 0.8f, transform.position.y), Vector2.left * 0.4f, Color.red);
 
@@ -41,15 +43,19 @@ public class eMSlimeController : MonoBehaviour
         {
             if (hit.transform.CompareTag("Slime"))
             {
-                canMove = false;
-                Debug.Log("HIT SOMETHING");
-                if (attacking) {
-                    Attack();
-                    attacking = false;
-                    StartCoroutine(AttackDelay());
+                if (hit.transform.gameObject.layer == 0)
+                {
+                    canMove = false;
+                    Debug.Log("HIT SOMETHING");
+                    if (attacking)
+                    {
+                        Attack();
+                        attacking = false;
+                        StartCoroutine(AttackDelay());
+                    }
                 }
-            }
-            Debug.Log("SEE SOMETHING");
+                }
+                Debug.Log("SEE SOMETHING");
         }
 
         if (canMove) 
@@ -59,15 +65,35 @@ public class eMSlimeController : MonoBehaviour
         }
 
         if (hp <= 0) {
+            GameManager.GetComponent<GameManager>().score += 10;
+            GameManager.GetComponent<GameManager>().slimeBux += 50;
             Destroy(gameObject);
         }
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "fBullet") {
-            var fBull = collision.gameObject.GetComponent<fBulletController>();
-            hp -= fBull.dmg;
+        if (collision.gameObject.tag == "Bullet") {
+
+            int Bull = 0;
+
+            if (collision.gameObject.TryGetComponent(out fBulletController fireBull)) 
+            {
+                Bull = 2;
+            } 
+            else
+            if (collision.gameObject.TryGetComponent(out wBulletController waterBull))
+            {
+                Bull = 1;
+            } 
+            else
+            if (collision.gameObject.TryGetComponent(out sBulletController steamBull))
+            {
+                Bull = 1;
+            }
+
+            
+            hp -= Bull;
             Destroy(collision.gameObject);
         }
         Debug.Log("ow");

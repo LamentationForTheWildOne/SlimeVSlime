@@ -2,18 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class fSlimeController : MonoBehaviour
+public class wSlimeController : MonoBehaviour
 {
     public GameObject GameManager;
     public bool held = false;
     public bool active = false;
     public GameObject hoverCell;
     public float aspd = 2;
+    public float saspd = 10;
     public bool canshoot = true;
     public GameObject Bullet;
     public GameObject sSlime;
     public int hp = 10;
     public GameObject[] gos;
+    public bool canspecial = true;
     public bool steaming = false;
     public bool soaking = false;
     public int heal = 0;
@@ -21,15 +23,16 @@ public class fSlimeController : MonoBehaviour
     public GameObject[] slimes;
     public int drift = 2;
 
+    // Start is called before the first frame update
+
     private void Awake()
     {
         StartCoroutine(Regen());
     }
-    // Start is called before the first frame update
     void Start()
     {
         GameManager = GameObject.Find("GameManager");
-        StartCoroutine(Regen());
+        
     }
 
     // Update is called once per frame
@@ -40,16 +43,18 @@ public class fSlimeController : MonoBehaviour
 
     void FixedUpdate()
     {
-        RaycastHit2D hit = Physics2D.Raycast(new Vector3(transform.position.x + 0.6f, transform.position.y), -Vector2.left, 20, 1<<7);
+        RaycastHit2D hit = Physics2D.Raycast(new Vector3(transform.position.x + 0.6f, transform.position.y), -Vector2.left, 20, 1 << 7);
         Debug.DrawRay(new Vector3(transform.position.x + 0.6f, transform.position.y), -Vector2.left * 20, Color.green);
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        if (held) {
+        if (held)
+        {
             transform.position = new Vector3(mousePos.x, mousePos.y);
             //FindClosestCell();
             hoverCell = FindClosestCell();
         }
 
-        if (hit.collider != null) {
+        if (hit.collider != null)
+        {
             Debug.Log("hit");
         }
 
@@ -67,6 +72,14 @@ public class fSlimeController : MonoBehaviour
                     }
                     Debug.Log("hitE");
                 }
+            }
+
+            if (canspecial)
+            {
+                Special();
+                canspecial = false;
+
+                StartCoroutine(SpecialDelay());
             }
 
             if (hoverCell.GetComponent<CellManage>().steamed)
@@ -104,19 +117,17 @@ public class fSlimeController : MonoBehaviour
             {
                 heal = 0;
             }
-
         }
         else if (!held)
         {
             transform.position = new Vector3(transform.position.x, transform.position.y - drift * Time.deltaTime);
         }
-
-
     }
 
     private void OnMouseOver()
     {
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(0))
+        {
 
             if (!GameManager.GetComponent<GameManager>().holding)
             {
@@ -154,20 +165,20 @@ public class fSlimeController : MonoBehaviour
                             transform.position = hoverCell.transform.position;
                             hoverCell.GetComponent<CellManage>().filled = true;
                         }
-                        else
+                        else 
                         {
                             Merge();
-
+                        
                         }
                     }
 
-                    
+
                 }
             }
 
         }
 
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1)) 
         {
             if (held)
             {
@@ -183,14 +194,15 @@ public class fSlimeController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.tag == "Cell") {
+        if (col.gameObject.tag == "Cell")
+        {
             //hoverCell = col.gameObject;
         }
     }
 
     public GameObject FindClosestCell()
     {
-        
+
         gos = GameObject.FindGameObjectsWithTag("Cell");
         GameObject closest = null;
         float distance = Mathf.Infinity;
@@ -230,16 +242,15 @@ public class fSlimeController : MonoBehaviour
 
     }
 
-    private void Fire() {
+    private void Fire()
+    {
         var spawnedBullet = Instantiate(Bullet, transform.position, Quaternion.identity);
     }
 
-    private void Merge()
-    {
+    private void Merge() {
         var slime = CloseSlime();
 
-        if (slime.TryGetComponent(out wSlimeController slimeCheck))
-        {
+        if (slime.TryGetComponent(out fSlimeController slimeCheck)) {
 
             var spawnedsSlime = Instantiate(sSlime, slime.transform.position, Quaternion.identity);
             spawnedsSlime.GetComponent<sSlimeController>().active = true;
@@ -249,15 +260,40 @@ public class fSlimeController : MonoBehaviour
             Destroy(gameObject);
             Destroy(slime);
         }
+        
 
 
+    }
 
+    private void Special()
+    {
+        RaycastHit2D[] hits = Physics2D.RaycastAll(new Vector3(transform.position.x, transform.position.y), -Vector2.left, 20, 1 << 2);
+
+        for (int i = 0; i < hits.Length; i++)
+        {
+            RaycastHit2D hit = hits[i];
+            if (hit.transform.CompareTag("Cell"))
+            {
+                var Cell = hit.transform.GetComponent<CellManage>();
+
+                if (Cell)
+                {
+                    Cell.BroadcastMessage("Wetted");
+                }
+            }
+        }
     }
 
     IEnumerator ShootDelay()
     {
         yield return new WaitForSeconds(aspd);
         canshoot = true;
+    }
+
+    IEnumerator SpecialDelay()
+    {
+        yield return new WaitForSeconds(saspd);
+        canspecial = true;
     }
 
     IEnumerator Regen()
@@ -279,13 +315,10 @@ public class fSlimeController : MonoBehaviour
     public void takeDmg(int damage)
     {
         hp -= damage;
-        if (hp <= 0) 
+        if (hp <= 0)
         {
             hoverCell.GetComponent<CellManage>().filled = false;
             Destroy(gameObject);
         }
     }
-
-
-
 }

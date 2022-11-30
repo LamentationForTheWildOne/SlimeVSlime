@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -95833734572661067}
   - component: {fileID: -4250510899441857982}
   - component: {fileID: 6597501976506854816}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: eMSlime
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -130,8 +130,10 @@ MonoBehaviour:
   hp: 10
   dmg: 2
   waitSec: 3
+  attSec: 2
   canMove: 0
   pastWait: 0
+  attacking: 1
 --- !u!50 &6597501976506854816
 Rigidbody2D:
   serializedVersion: 4
