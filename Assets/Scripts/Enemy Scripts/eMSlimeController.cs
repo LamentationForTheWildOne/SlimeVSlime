@@ -65,6 +65,8 @@ public class eMSlimeController : MonoBehaviour
         }
 
         if (hp <= 0) {
+            GameManager.GetComponent<GameManager>().score += 10;
+            GameManager.GetComponent<GameManager>().slimeBux += 50;
             Destroy(gameObject);
         }
     }

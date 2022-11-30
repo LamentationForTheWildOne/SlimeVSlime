@@ -125,11 +125,14 @@ public class sSlimeController : MonoBehaviour
 
                 if (!active)
                 {
+                    if (GameManager.GetComponent<GameManager>().slimeBux >= 100) {
 
-                    held = true;
-                    gameObject.layer = 1;
-                    GameManager.GetComponent<GameManager>().holding = true;
-                    Debug.Log("click");
+                        GameManager.GetComponent<GameManager>().slimeBux -= 100;
+                        held = true;
+                        gameObject.layer = 1;
+                        GameManager.GetComponent<GameManager>().holding = true;
+                        Debug.Log("click");
+                    }
 
                 }
 
@@ -154,6 +157,18 @@ public class sSlimeController : MonoBehaviour
 
 
                 }
+            }
+
+        }
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (held)
+            {
+                held = false;
+                GameManager.GetComponent<GameManager>().holding = false;
+                GameManager.GetComponent<GameManager>().slimeBux += 100;
+                transform.position = GameManager.GetComponent<GameManager>().convey.transform.position;
+
             }
 
         }

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,6 +18,14 @@ public class GameManager : MonoBehaviour
     private GameObject c82;
     private GameObject c83;
     private GameObject c84;
+
+    public Text tscore;
+    public Text thealth;
+    public Text tsb;
+
+    public int slimeBux = 300;
+    public int score = 0;
+    public int health = 5;
 
     // Start is called before the first frame update
     public bool holding = false;
@@ -34,7 +44,12 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        tscore.text = ("Score: " + score.ToString());
+        thealth.text = ("Health: " + health.ToString());
+        tsb.text = ("Slime Bucks: " + slimeBux.ToString());
+        if (health <= 0) {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 
     IEnumerator SpawnDelay()
