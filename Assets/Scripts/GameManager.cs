@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,15 +14,16 @@ public class GameManager : MonoBehaviour
     
     public GameObject convey;
     public int sSec = 5;
+    public int goodsSec = 4;
     private GameObject c80;
     private GameObject c81;
     private GameObject c82;
     private GameObject c83;
     private GameObject c84;
 
-    public Text tscore;
-    public Text thealth;
-    public Text tsb;
+    public TextMeshProUGUI tscore;
+    public TextMeshProUGUI thealth;
+    public TextMeshProUGUI tsb;
 
     public int slimeBux = 300;
     public int score = 0;
@@ -83,7 +85,7 @@ public class GameManager : MonoBehaviour
     IEnumerator SlimeDelay()
     {
         GameObject slimeType = null;
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(goodsSec);
         int x = Random.Range(1, 3);
         
         if (x == 1)
