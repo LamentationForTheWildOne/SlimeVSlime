@@ -155,11 +155,13 @@ MonoBehaviour:
   canshoot: 1
   Bullet: {fileID: 6474769987369981350, guid: f361e26dc41a9034ba2c38824ef88d75, type: 3}
   sSlime: {fileID: 673279834317652838, guid: 5d7a13bacb2de7c4d87c2274810f2878, type: 3}
+  pSlime: {fileID: 673279834317652838, guid: a052ed35df2c1744397dddbbcb6232e4, type: 3}
   hp: 10
   gos: []
   canspecial: 1
   steaming: 0
   soaking: 0
+  grassing: 0
   heal: 0
   mergeSlime: {fileID: 0}
   slimes: []

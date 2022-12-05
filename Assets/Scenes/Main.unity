@@ -156,10 +156,10 @@ RectTransform:
   m_Father: {fileID: 1692383566}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -292, y: 187}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchorMin: {x: 0.012500002, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: -97, y: 74.5}
+  m_SizeDelta: {x: -190, y: -175}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &131780933
 MonoBehaviour:
@@ -1964,15 +1964,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wSlime: {fileID: 673279834317652838, guid: cc6ca2aa0c277184fb776ff3fd5444e6, type: 3}
   fSlime: {fileID: 673279834317652838, guid: aabe8392d8f26e84294b0899daf7b4c3, type: 3}
+  eSlime: {fileID: 673279834317652838, guid: 7bcb8b6d1436c4f46b1e580cf9f8dcb4, type: 3}
   mSlime: {fileID: 8739866800729553030, guid: ff7c1cf090b994c40984cc313b42d243, type: 3}
   spawnTile: {fileID: 0}
   convey: {fileID: 0}
   sSec: 5
-  goodsSec: 4
+  goodsSec: 2
   tscore: {fileID: 131780933}
   thealth: {fileID: 268595178}
   tsb: {fileID: 864792643}
-  slimeBux: 300
+  slimeBux: 500
   score: 0
   health: 5
   holding: 0

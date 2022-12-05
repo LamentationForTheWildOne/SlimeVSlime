@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 7746251527500116810}
   - component: {fileID: 4276826333748632026}
   - component: {fileID: 2361187103885806166}
-  - component: {fileID: -6320806899623137019}
   - component: {fileID: -3652725403911466260}
   - component: {fileID: -1785044370600635036}
-  m_Layer: 6
-  m_Name: fSlime
+  - component: {fileID: -2648905589496944254}
+  m_Layer: 0
+  m_Name: lSlime
   m_TagString: Slime
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 21300000, guid: afc4339f848a1884a953e9ba5e717173, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d978094f680004197914a9be1aefeadf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -101,49 +101,19 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.06628752, y: 0.044417858}
+  m_Offset: {x: -0.017447948, y: 0.07581425}
   m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0.33333334, w: 0}
-    pivot: {x: 0.4294955, y: 0.34647042}
-    oldSize: {x: 2.1416667, y: 1.8}
+    border: {x: 0, y: 0, z: 0.18, w: 0.246}
+    pivot: {x: 0.4592488, y: 0.363881}
+    oldSize: {x: 3.394, y: 2.648}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.3056059, y: 1.1236391}
+  m_Size: {x: 1.5567789, y: 1.3259735}
   m_EdgeRadius: 0
---- !u!114 &-6320806899623137019
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 673279834317652838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8e03f6e428c02e478554a4d16d451c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GameManager: {fileID: 0}
-  held: 0
-  active: 0
-  hoverCell: {fileID: 0}
-  aspd: 2
-  canshoot: 1
-  Bullet: {fileID: 6474769987369981350, guid: 603c751c4ff46ce46b26c25b6dd2d0a6, type: 3}
-  sSlime: {fileID: 673279834317652838, guid: 5d7a13bacb2de7c4d87c2274810f2878, type: 3}
-  lSlime: {fileID: 673279834317652838, guid: 338fb750d1a19bc4db2348176c1f5cc2, type: 3}
-  hp: 10
-  gos: []
-  steaming: 0
-  soaking: 0
-  grassing: 0
-  heal: 0
-  mergeSlime: {fileID: 0}
-  slimes: []
-  drift: 2
 --- !u!50 &-3652725403911466260
 Rigidbody2D:
   serializedVersion: 4
@@ -185,3 +155,34 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-2648905589496944254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 673279834317652838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e61aaa2a0b8d7314cbdb6f7a8691e6d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GameManager: {fileID: 0}
+  held: 0
+  active: 0
+  hoverCell: {fileID: 0}
+  aspd: 10
+  saspd: 10
+  canshoot: 1
+  Bullet: {fileID: 0}
+  sSlime: {fileID: 0}
+  hp: 10
+  gos: []
+  canspecial: 1
+  steaming: 0
+  soaking: 0
+  grassing: 0
+  heal: 0
+  mergeSlime: {fileID: 0}
+  slimes: []
+  drift: 2

@@ -2,18 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class wSlimeController : MonoBehaviour
+public class pSlimeController : MonoBehaviour
 {
     public GameObject GameManager;
     public bool held = false;
     public bool active = false;
     public GameObject hoverCell;
-    public float aspd = 2;
+    public float aspd = 4;
     public float saspd = 10;
     public bool canshoot = true;
     public GameObject Bullet;
     public GameObject sSlime;
-    public GameObject pSlime;
     public int hp = 10;
     public GameObject[] gos;
     public bool canspecial = true;
@@ -24,6 +23,7 @@ public class wSlimeController : MonoBehaviour
     public GameObject mergeSlime;
     public GameObject[] slimes;
     public int drift = 2;
+    public int roottime = 5;
 
     // Start is called before the first frame update
 
@@ -34,7 +34,7 @@ public class wSlimeController : MonoBehaviour
     void Start()
     {
         GameManager = GameObject.Find("GameManager");
-        
+
     }
 
     // Update is called once per frame
@@ -68,7 +68,8 @@ public class wSlimeController : MonoBehaviour
                 {
                     if (canshoot)
                     {
-                        Fire();
+                        hit.transform.GetComponent<eMSlimeController>().rooted = true;
+                        hit.transform.BroadcastMessage("Root", roottime);
                         canshoot = false;
                         StartCoroutine(ShootDelay());
                     }
@@ -138,10 +139,7 @@ public class wSlimeController : MonoBehaviour
                 heal = 0;
             }
         }
-        else if (!held)
-        {
-            transform.position = new Vector3(transform.position.x, transform.position.y - drift * Time.deltaTime);
-        }
+        
     }
 
     private void OnMouseOver()
@@ -185,10 +183,10 @@ public class wSlimeController : MonoBehaviour
                             transform.position = hoverCell.transform.position;
                             hoverCell.GetComponent<CellManage>().filled = true;
                         }
-                        else 
+                        else
                         {
                             Merge();
-                        
+
                         }
                     }
 
@@ -198,7 +196,7 @@ public class wSlimeController : MonoBehaviour
 
         }
 
-        if (Input.GetMouseButtonDown(1)) 
+        if (Input.GetMouseButtonDown(1))
         {
             if (held)
             {
@@ -262,36 +260,13 @@ public class wSlimeController : MonoBehaviour
 
     }
 
-    private void Fire()
-    {
-        var spawnedBullet = Instantiate(Bullet, transform.position, Quaternion.identity);
-    }
+ 
 
-    private void Merge() {
+    private void Merge()
+    {
         var slime = CloseSlime();
 
-        if (slime.TryGetComponent(out fSlimeController fslimeCheck)) {
-
-            var spawnedsSlime = Instantiate(sSlime, slime.transform.position, Quaternion.identity);
-            spawnedsSlime.GetComponent<sSlimeController>().active = true;
-            spawnedsSlime.GetComponent<sSlimeController>().hoverCell = fslimeCheck.hoverCell;
-            GameManager.GetComponent<GameManager>().holding = false;
-
-            Destroy(gameObject);
-            Destroy(slime);
-        }
-
-        if (slime.TryGetComponent(out eSlimeController eslimeCheck))
-        {
-
-            var spawnedpSlime = Instantiate(pSlime, slime.transform.position, Quaternion.identity);
-            spawnedpSlime.GetComponent<pSlimeController>().active = true;
-            spawnedpSlime.GetComponent<pSlimeController>().hoverCell = eslimeCheck.hoverCell;
-            GameManager.GetComponent<GameManager>().holding = false;
-
-            Destroy(gameObject);
-            Destroy(slime);
-        }
+        
 
 
 
@@ -310,7 +285,7 @@ public class wSlimeController : MonoBehaviour
 
                 if (Cell)
                 {
-                    Cell.BroadcastMessage("Wetted");
+                    Cell.BroadcastMessage("Grassed");
                 }
             }
         }

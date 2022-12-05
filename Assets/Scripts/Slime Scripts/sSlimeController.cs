@@ -17,6 +17,7 @@ public class sSlimeController : MonoBehaviour
     public bool canspecial = true;
     public bool steaming = false;
     public bool soaking = false;
+    public bool grassing = false;
     public int heal = 0;
 
     private void Awake()
@@ -95,6 +96,15 @@ public class sSlimeController : MonoBehaviour
                 soaking = false;
             }
 
+            if (hoverCell.GetComponent<CellManage>().grassed)
+            {
+                grassing = true;
+            }
+            else
+            {
+                grassing = false;
+            }
+
             if (steaming)
             {
                 aspd = 1;
@@ -109,6 +119,15 @@ public class sSlimeController : MonoBehaviour
                 heal = 2;
             }
             else 
+            {
+                heal = 0;
+            }
+
+            if (grassing)
+            {
+                heal = 4;
+            }
+            else
             {
                 heal = 0;
             }

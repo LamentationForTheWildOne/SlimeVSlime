@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class wSlimeController : MonoBehaviour
+public class eSlimeController : MonoBehaviour
 {
     public GameObject GameManager;
     public bool held = false;
@@ -12,14 +12,15 @@ public class wSlimeController : MonoBehaviour
     public float saspd = 10;
     public bool canshoot = true;
     public GameObject Bullet;
-    public GameObject sSlime;
     public GameObject pSlime;
+    public GameObject lSlime;
     public int hp = 10;
     public GameObject[] gos;
     public bool canspecial = true;
     public bool steaming = false;
     public bool soaking = false;
     public bool grassing = false;
+    public bool building = false;
     public int heal = 0;
     public GameObject mergeSlime;
     public GameObject[] slimes;
@@ -34,7 +35,7 @@ public class wSlimeController : MonoBehaviour
     void Start()
     {
         GameManager = GameObject.Find("GameManager");
-        
+
     }
 
     // Update is called once per frame
@@ -45,13 +46,13 @@ public class wSlimeController : MonoBehaviour
 
     void FixedUpdate()
     {
-        RaycastHit2D hit = Physics2D.Raycast(new Vector3(transform.position.x + 0.6f, transform.position.y), -Vector2.left, 20, 1 << 7);
+        RaycastHit2D hit = Physics2D.Raycast(new Vector3(transform.position.x + 0.6f, transform.position.y), -Vector2.left, 2.5f, 1 << 7);
         Debug.DrawRay(new Vector3(transform.position.x + 0.6f, transform.position.y), -Vector2.left * 20, Color.green);
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if (held)
         {
             transform.position = new Vector3(mousePos.x, mousePos.y);
-            //FindClosestCell();
+            
             hoverCell = FindClosestCell();
         }
 
@@ -66,20 +67,24 @@ public class wSlimeController : MonoBehaviour
             {
                 if (hit.transform.CompareTag("Enemy"))
                 {
-                    if (canshoot)
-                    {
-                        Fire();
-                        canshoot = false;
-                        StartCoroutine(ShootDelay());
+                    if (!building) {
+                        
+                        if (canshoot)
+                        {
+                            hit.transform.GetComponent<eMSlimeController>().BroadcastMessage("Meleed", 2);
+                            canshoot = false;
+                            StartCoroutine(ShootDelay());
+                        }
+                        Debug.Log("hitE");
                     }
-                    Debug.Log("hitE");
                 }
             }
 
             if (canspecial)
             {
-                Special();
+                
                 canspecial = false;
+                building = true;
 
                 StartCoroutine(SpecialDelay());
             }
@@ -184,11 +189,12 @@ public class wSlimeController : MonoBehaviour
                             active = true;
                             transform.position = hoverCell.transform.position;
                             hoverCell.GetComponent<CellManage>().filled = true;
+                            Special();
                         }
-                        else 
+                        else
                         {
                             Merge();
-                        
+
                         }
                     }
 
@@ -198,7 +204,7 @@ public class wSlimeController : MonoBehaviour
 
         }
 
-        if (Input.GetMouseButtonDown(1)) 
+        if (Input.GetMouseButtonDown(1))
         {
             if (held)
             {
@@ -262,58 +268,40 @@ public class wSlimeController : MonoBehaviour
 
     }
 
-    private void Fire()
+    private void Merge()
     {
-        var spawnedBullet = Instantiate(Bullet, transform.position, Quaternion.identity);
-    }
-
-    private void Merge() {
         var slime = CloseSlime();
 
-        if (slime.TryGetComponent(out fSlimeController fslimeCheck)) {
+        if (slime.TryGetComponent(out fSlimeController fslimeCheck))
+        {
 
-            var spawnedsSlime = Instantiate(sSlime, slime.transform.position, Quaternion.identity);
-            spawnedsSlime.GetComponent<sSlimeController>().active = true;
-            spawnedsSlime.GetComponent<sSlimeController>().hoverCell = fslimeCheck.hoverCell;
+            var spawnedlSlime = Instantiate(lSlime, slime.transform.position, Quaternion.identity);
+            spawnedlSlime.GetComponent<lSlimeController>().active = true;
+            spawnedlSlime.GetComponent<lSlimeController>().hoverCell = fslimeCheck.hoverCell;
             GameManager.GetComponent<GameManager>().holding = false;
 
             Destroy(gameObject);
             Destroy(slime);
         }
 
-        if (slime.TryGetComponent(out eSlimeController eslimeCheck))
+        if (slime.TryGetComponent(out wSlimeController wslimeCheck))
         {
 
             var spawnedpSlime = Instantiate(pSlime, slime.transform.position, Quaternion.identity);
             spawnedpSlime.GetComponent<pSlimeController>().active = true;
-            spawnedpSlime.GetComponent<pSlimeController>().hoverCell = eslimeCheck.hoverCell;
+            spawnedpSlime.GetComponent<pSlimeController>().hoverCell = wslimeCheck.hoverCell;
             GameManager.GetComponent<GameManager>().holding = false;
 
             Destroy(gameObject);
             Destroy(slime);
         }
-
-
 
     }
 
     private void Special()
     {
-        RaycastHit2D[] hits = Physics2D.RaycastAll(new Vector3(transform.position.x, transform.position.y), -Vector2.left, 20, 1 << 2);
-
-        for (int i = 0; i < hits.Length; i++)
-        {
-            RaycastHit2D hit = hits[i];
-            if (hit.transform.CompareTag("Cell"))
-            {
-                var Cell = hit.transform.GetComponent<CellManage>();
-
-                if (Cell)
-                {
-                    Cell.BroadcastMessage("Wetted");
-                }
-            }
-        }
+        var spawnedWall = Instantiate(Bullet, new Vector3(transform.position.x+1.5f, transform.position.y), Quaternion.identity);
+        spawnedWall.GetComponent<eWallController>().maker = this.gameObject;
     }
 
     IEnumerator ShootDelay()
@@ -325,7 +313,7 @@ public class wSlimeController : MonoBehaviour
     IEnumerator SpecialDelay()
     {
         yield return new WaitForSeconds(saspd);
-        canspecial = true;
+        Special();
     }
 
     IEnumerator Regen()
