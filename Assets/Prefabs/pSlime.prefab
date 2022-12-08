@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2361187103885806166}
   - component: {fileID: -3652725403911466260}
   - component: {fileID: 3031110360122407164}
+  - component: {fileID: 1431123165909480889}
   m_Layer: 0
   m_Name: pSlime
   m_TagString: Slime
@@ -76,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 21300000, guid: 9743c47c7c62e4e078e4a437777e7988, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3574fece3d6e64caa940d8f9232606f3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -103,7 +104,7 @@ BoxCollider2D:
   m_Offset: {x: -0.071059704, y: 0.11123061}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.47159764, y: 0.33855656}
+    pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 3.394, y: 2.648}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
@@ -166,3 +167,23 @@ MonoBehaviour:
   slimes: []
   drift: 2
   roottime: 5
+--- !u!95 &1431123165909480889
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 673279834317652838}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 223e1e589230548079d6177450f7add9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

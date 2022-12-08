@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2361187103885806166}
   - component: {fileID: -3652725403911466260}
   - component: {fileID: 8410336661219835023}
+  - component: {fileID: 8648981930047719093}
   m_Layer: 0
   m_Name: sSlime
   m_TagString: Slime
@@ -76,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 21300000, guid: 7ad65a2a117314324b9ef24db196be5f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 964b5a20ecf8c48759b85ebc279d93e7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -103,7 +104,7 @@ BoxCollider2D:
   m_Offset: {x: -0.041439056, y: 0.15312982}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.46588904, y: 0.34170058}
+    pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 3.394, y: 2.648}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
@@ -159,4 +160,25 @@ MonoBehaviour:
   canspecial: 1
   steaming: 0
   soaking: 0
+  grassing: 0
   heal: 0
+--- !u!95 &8648981930047719093
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 673279834317652838}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 62d947c71ac7c43b78c7d3bcc1769154, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
