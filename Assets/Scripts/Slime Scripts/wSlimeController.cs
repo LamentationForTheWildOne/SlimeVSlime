@@ -13,11 +13,13 @@ public class wSlimeController : MonoBehaviour
     public bool canshoot = true;
     public GameObject Bullet;
     public GameObject sSlime;
+    public GameObject pSlime;
     public int hp = 10;
     public GameObject[] gos;
     public bool canspecial = true;
     public bool steaming = false;
     public bool soaking = false;
+    public bool grassing = false;
     public int heal = 0;
     public GameObject mergeSlime;
     public GameObject[] slimes;
@@ -100,6 +102,15 @@ public class wSlimeController : MonoBehaviour
                 soaking = false;
             }
 
+            if (hoverCell.GetComponent<CellManage>().grassed)
+            {
+                grassing = true;
+            }
+            else
+            {
+                grassing = false;
+            }
+
             if (steaming)
             {
                 aspd = 1;
@@ -112,6 +123,15 @@ public class wSlimeController : MonoBehaviour
             if (soaking)
             {
                 heal = 2;
+            }
+            else
+            {
+                heal = 0;
+            }
+
+            if (grassing)
+            {
+                heal = 4;
             }
             else
             {
@@ -250,17 +270,29 @@ public class wSlimeController : MonoBehaviour
     private void Merge() {
         var slime = CloseSlime();
 
-        if (slime.TryGetComponent(out fSlimeController slimeCheck)) {
+        if (slime.TryGetComponent(out fSlimeController fslimeCheck)) {
 
             var spawnedsSlime = Instantiate(sSlime, slime.transform.position, Quaternion.identity);
             spawnedsSlime.GetComponent<sSlimeController>().active = true;
-            spawnedsSlime.GetComponent<sSlimeController>().hoverCell = slimeCheck.hoverCell;
+            spawnedsSlime.GetComponent<sSlimeController>().hoverCell = fslimeCheck.hoverCell;
             GameManager.GetComponent<GameManager>().holding = false;
 
             Destroy(gameObject);
             Destroy(slime);
         }
-        
+
+        if (slime.TryGetComponent(out eSlimeController eslimeCheck))
+        {
+
+            var spawnedpSlime = Instantiate(pSlime, slime.transform.position, Quaternion.identity);
+            spawnedpSlime.GetComponent<pSlimeController>().active = true;
+            spawnedpSlime.GetComponent<pSlimeController>().hoverCell = eslimeCheck.hoverCell;
+            GameManager.GetComponent<GameManager>().holding = false;
+
+            Destroy(gameObject);
+            Destroy(slime);
+        }
+
 
 
     }

@@ -75,9 +75,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: afc4339f848a1884a953e9ba5e717173, type: 3}
-  m_Color: {r: 0.23985407, g: 0.324819, b: 0.9245283, a: 1}
+  m_SortingOrder: 5
+  m_Sprite: {fileID: 21300000, guid: 795f1bb041eff4b7abfebed58dd8e457, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -100,18 +100,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.06628752, y: 0.044417858}
+  m_Offset: {x: -0.071059704, y: 0.11123061}
   m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0.33333334, w: 0}
-    pivot: {x: 0.4294955, y: 0.34647042}
-    oldSize: {x: 2.1416667, y: 1.8}
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.46118405, y: 0.35979196}
+    oldSize: {x: 3.394, y: 2.648}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.3056059, y: 1.1236391}
+  m_Size: {x: 1.6587591, y: 1.2572646}
   m_EdgeRadius: 0
 --- !u!50 &-3652725403911466260
 Rigidbody2D:
@@ -155,11 +155,13 @@ MonoBehaviour:
   canshoot: 1
   Bullet: {fileID: 6474769987369981350, guid: f361e26dc41a9034ba2c38824ef88d75, type: 3}
   sSlime: {fileID: 673279834317652838, guid: 5d7a13bacb2de7c4d87c2274810f2878, type: 3}
+  pSlime: {fileID: 673279834317652838, guid: a052ed35df2c1744397dddbbcb6232e4, type: 3}
   hp: 10
   gos: []
   canspecial: 1
   steaming: 0
   soaking: 0
+  grassing: 0
   heal: 0
   mergeSlime: {fileID: 0}
   slimes: []

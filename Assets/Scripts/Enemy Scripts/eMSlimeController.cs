@@ -10,16 +10,22 @@ public class eMSlimeController : MonoBehaviour
     public int dmg = 2;
     public int waitSec = 3;
     public int attSec = 2;
+    public int burn = 0;
     public bool canMove = false;
     public bool pastWait = false;
     public bool attacking = true;
+    public bool rooted = false;
     public RaycastHit2D hit;
+
+    public GameObject hoverCell;
+    public GameObject[] gos;
 
     // Start is called before the first frame update
     void Start()
     {
         GameManager = GameObject.Find("GameManager");
         StartCoroutine(MoveDelay());
+        StartCoroutine(DoT());
     }
 
     // Update is called once per frame
@@ -30,13 +36,30 @@ public class eMSlimeController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        hoverCell = FindClosestCell();
+
+        if (hoverCell.GetComponent<CellManage>().burned)
+        {
+            burn = 3;
+            spd = 1;
+        }
+        else {
+            burn = 0;
+            spd = 2;
+        }
+
         
-         
+
         hit = Physics2D.Raycast(new Vector3(transform.position.x - 0.8f, transform.position.y), Vector2.left,0.4f);
         Debug.DrawRay(new Vector3(transform.position.x - 0.8f, transform.position.y), Vector2.left * 0.4f, Color.red);
 
         if (pastWait) {
             canMove = true;
+        }
+
+        if (rooted)
+        {
+            canMove = false;
         }
 
         if (hit.collider != null)
@@ -113,7 +136,42 @@ public class eMSlimeController : MonoBehaviour
         }
     }
 
+    public void Meleed(int damage) {
+        hp -= damage;
+    }
 
+    public void Root(int roottime) {
+        
+        canMove = false;
+        StartCoroutine(RootDelay(roottime));
+    }
+
+    public GameObject FindClosestCell()
+    {
+
+        gos = GameObject.FindGameObjectsWithTag("Cell");
+        GameObject closest = null;
+        float distance = Mathf.Infinity;
+        Vector3 position = transform.position;
+        foreach (GameObject go in gos)
+        {
+            Vector3 diff = go.transform.position - position;
+            float curDistance = diff.sqrMagnitude;
+            if (curDistance < distance)
+            {
+                closest = go;
+                distance = curDistance;
+            }
+        }
+        return closest;
+    }
+
+    IEnumerator RootDelay(int roottime)
+    {
+        yield return new WaitForSeconds(roottime);
+        rooted = false;
+        
+    }
 
     IEnumerator MoveDelay()
     {
@@ -126,5 +184,12 @@ public class eMSlimeController : MonoBehaviour
     {
         yield return new WaitForSeconds(attSec);
         attacking = true;
+    }
+
+    IEnumerator DoT()
+    {
+        yield return new WaitForSeconds(1);
+        hp -= burn;
+        StartCoroutine(DoT());
     }
 }

@@ -3,27 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
     public GameObject wSlime;
     public GameObject fSlime;
+    public GameObject eSlime;
     public GameObject mSlime;
     public GameObject spawnTile;
     
     public GameObject convey;
     public int sSec = 5;
+    public int goodsSec = 4;
     private GameObject c80;
     private GameObject c81;
     private GameObject c82;
     private GameObject c83;
     private GameObject c84;
 
-    public Text tscore;
-    public Text thealth;
-    public Text tsb;
+    public TextMeshProUGUI tscore;
+    public TextMeshProUGUI thealth;
+    public TextMeshProUGUI tsb;
 
-    public int slimeBux = 300;
+    public int slimeBux = 500;
     public int score = 0;
     public int health = 5;
 
@@ -48,7 +51,7 @@ public class GameManager : MonoBehaviour
         thealth.text = ("Health: " + health.ToString());
         tsb.text = ("Slime Bucks: " + slimeBux.ToString());
         if (health <= 0) {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            SceneManager.LoadScene("Bad End");
         }
     }
 
@@ -83,8 +86,8 @@ public class GameManager : MonoBehaviour
     IEnumerator SlimeDelay()
     {
         GameObject slimeType = null;
-        yield return new WaitForSeconds(4);
-        int x = Random.Range(1, 3);
+        yield return new WaitForSeconds(goodsSec);
+        int x = Random.Range(1, 4);
         
         if (x == 1)
         {
@@ -94,7 +97,11 @@ public class GameManager : MonoBehaviour
         {
             slimeType = fSlime;
         }
-        
+        if (x == 3)
+        {
+            slimeType = eSlime;
+        }
+
 
         SpawnFriendSlime(slimeType);
         StartCoroutine(SlimeDelay());
