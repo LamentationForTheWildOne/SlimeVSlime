@@ -24,6 +24,12 @@ public class pSlimeController : MonoBehaviour
     public GameObject[] slimes;
     public int drift = 2;
     public int roottime = 5;
+    public Animator myAni;
+    public AudioSource myAud;
+
+    public AudioClip place;
+    public AudioClip shoot;
+    public AudioClip hurt;
 
     // Start is called before the first frame update
 
@@ -34,7 +40,8 @@ public class pSlimeController : MonoBehaviour
     void Start()
     {
         GameManager = GameObject.Find("GameManager");
-
+        myAni = this.gameObject.transform.GetChild(0).GetComponent<Animator>();
+        myAud = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -68,6 +75,7 @@ public class pSlimeController : MonoBehaviour
                 {
                     if (canshoot)
                     {
+                        myAni.SetTrigger("Shoot");
                         hit.transform.GetComponent<eMSlimeController>().rooted = true;
                         hit.transform.BroadcastMessage("Root", roottime);
                         canshoot = false;
@@ -114,11 +122,11 @@ public class pSlimeController : MonoBehaviour
 
             if (steaming)
             {
-                aspd = 1;
+                aspd = 2;
             }
             else
             {
-                aspd = 2;
+                aspd = 6;
             }
 
             if (soaking)
@@ -322,6 +330,7 @@ public class pSlimeController : MonoBehaviour
     public void takeDmg(int damage)
     {
         hp -= damage;
+        myAud.PlayOneShot(hurt, 1F);
         if (hp <= 0)
         {
             hoverCell.GetComponent<CellManage>().filled = false;

@@ -23,6 +23,12 @@ public class lSlimeController : MonoBehaviour
     public GameObject mergeSlime;
     public GameObject[] slimes;
     public int drift = 2;
+    public Animator myAni;
+    public AudioSource myAud;
+
+    public AudioClip place;
+    public AudioClip shoot;
+    public AudioClip hurt;
 
     // Start is called before the first frame update
 
@@ -33,13 +39,20 @@ public class lSlimeController : MonoBehaviour
     void Start()
     {
         GameManager = GameObject.Find("GameManager");
-
+        myAni = this.gameObject.transform.GetChild(0).GetComponent<Animator>();
+        myAud = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (hp < 5)
+        {
+            myAni.SetBool("Hurt", true);
+        }
+        else {
+            myAni.SetBool("Hurt", false);
+        }
     }
 
     void FixedUpdate()
@@ -106,11 +119,11 @@ public class lSlimeController : MonoBehaviour
 
             if (steaming)
             {
-                aspd = 1;
+                aspd = 3;
             }
             else
             {
-                aspd = 2;
+                aspd = 5;
             }
 
             if (soaking)
@@ -174,6 +187,7 @@ public class lSlimeController : MonoBehaviour
                             active = true;
                             transform.position = hoverCell.transform.position;
                             hoverCell.GetComponent<CellManage>().filled = true;
+                            myAud.PlayOneShot(place, 1F);
                         }
                         else
                         {
@@ -254,6 +268,8 @@ public class lSlimeController : MonoBehaviour
 
     private void Fire()
     {
+        myAni.SetTrigger("Shoot");
+
         RaycastHit2D[] hits = Physics2D.RaycastAll(new Vector3(transform.position.x, transform.position.y), -Vector2.left, 3.5f, 1 << 2);
 
         for (int i = 0; i < hits.Length; i++)
@@ -317,6 +333,7 @@ public class lSlimeController : MonoBehaviour
     public void takeDmg(int damage)
     {
         hp -= damage;
+        myAud.PlayOneShot(hurt, 1F);
         if (hp <= 0)
         {
             hoverCell.GetComponent<CellManage>().filled = false;

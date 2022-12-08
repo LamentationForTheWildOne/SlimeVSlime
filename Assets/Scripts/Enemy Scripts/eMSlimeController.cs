@@ -16,9 +16,14 @@ public class eMSlimeController : MonoBehaviour
     public bool attacking = true;
     public bool rooted = false;
     public RaycastHit2D hit;
+    public AudioSource myAud;
+
+    public AudioClip hurt;
+    public AudioClip walk;
 
     public GameObject hoverCell;
     public GameObject[] gos;
+
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +31,7 @@ public class eMSlimeController : MonoBehaviour
         GameManager = GameObject.Find("GameManager");
         StartCoroutine(MoveDelay());
         StartCoroutine(DoT());
+        myAud = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -99,20 +105,22 @@ public class eMSlimeController : MonoBehaviour
         if (collision.gameObject.tag == "Bullet") {
 
             int Bull = 0;
+            
 
             if (collision.gameObject.TryGetComponent(out fBulletController fireBull)) 
             {
                 Bull = 2;
             } 
-            else
+            
             if (collision.gameObject.TryGetComponent(out wBulletController waterBull))
             {
                 Bull = 1;
             } 
-            else
+            
             if (collision.gameObject.TryGetComponent(out sBulletController steamBull))
             {
                 Bull = 1;
+                Debug.Log("steam");
             }
 
             
@@ -129,6 +137,7 @@ public class eMSlimeController : MonoBehaviour
         {
             if (hit.transform.CompareTag("Slime"))
             {
+                myAud.PlayOneShot(hurt, 1F);
                 var target = hit.transform;
                 target.BroadcastMessage("takeDmg", dmg);
             }

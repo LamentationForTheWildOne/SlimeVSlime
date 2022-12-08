@@ -19,22 +19,37 @@ public class sSlimeController : MonoBehaviour
     public bool soaking = false;
     public bool grassing = false;
     public int heal = 0;
+    public Animator myAni;
+    public AudioSource myAud;
+
+    public AudioClip place;
+    public AudioClip shoot;
+    public AudioClip hurt;
 
     private void Awake()
     {
-        StartCoroutine(Regen());
+        
     }
     // Start is called before the first frame update
     void Start()
     {
         GameManager = GameObject.Find("GameManager");
         StartCoroutine(Regen());
+        myAni = this.gameObject.transform.GetChild(0).GetComponent<Animator>();
+        myAud = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (hp < 5)
+        {
+            myAni.SetBool("Hurt", true);
+        }
+        else
+        {
+            myAni.SetBool("Hurt", false);
+        }
     }
 
     void FixedUpdate()
@@ -51,7 +66,7 @@ public class sSlimeController : MonoBehaviour
 
         if (hit.collider != null)
         {
-            Debug.Log("hit");
+            
         }
 
         if (active)
@@ -66,7 +81,7 @@ public class sSlimeController : MonoBehaviour
                         canshoot = false;
                         StartCoroutine(ShootDelay());
                     }
-                    Debug.Log("hitE");
+                    
                 }
             }
 
@@ -150,7 +165,7 @@ public class sSlimeController : MonoBehaviour
                         held = true;
                         gameObject.layer = 1;
                         GameManager.GetComponent<GameManager>().holding = true;
-                        Debug.Log("click");
+                        
                     }
 
                 }
@@ -223,6 +238,8 @@ public class sSlimeController : MonoBehaviour
 
     private void Fire()
     {
+        myAni.SetTrigger("Shoot");
+        myAud.PlayOneShot(shoot, 1F);
         var spawnedBullet = Instantiate(Bullet, transform.position, Quaternion.identity);
     }
 
@@ -275,6 +292,7 @@ public class sSlimeController : MonoBehaviour
     public void takeDmg(int damage)
     {
         hp -= damage;
+        myAud.PlayOneShot(hurt, 1F);
         if (hp <= 0)
         {
             hoverCell.GetComponent<CellManage>().filled = false;

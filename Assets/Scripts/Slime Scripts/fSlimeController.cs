@@ -22,6 +22,13 @@ public class fSlimeController : MonoBehaviour
     public GameObject mergeSlime;
     public GameObject[] slimes;
     public int drift = 2;
+    public Animator myAni;
+    public AudioSource myAud;
+
+    public AudioClip place;
+    public AudioClip shoot;
+    public AudioClip hurt;
+    public AudioClip merge;
 
     private void Awake()
     {
@@ -32,6 +39,8 @@ public class fSlimeController : MonoBehaviour
     {
         GameManager = GameObject.Find("GameManager");
         StartCoroutine(Regen());
+        myAni = this.gameObject.transform.GetChild(0).GetComponent<Animator>();
+        myAud = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -173,6 +182,7 @@ public class fSlimeController : MonoBehaviour
                             active = true;
                             transform.position = hoverCell.transform.position;
                             hoverCell.GetComponent<CellManage>().filled = true;
+                            myAud.PlayOneShot(place, 1F);
                         }
                         else
                         {
@@ -252,6 +262,8 @@ public class fSlimeController : MonoBehaviour
 
     private void Fire() {
         var spawnedBullet = Instantiate(Bullet, transform.position, Quaternion.identity);
+        myAni.SetTrigger("Shoot");
+        myAud.PlayOneShot(shoot, 1F);
     }
 
     private void Merge()
@@ -265,6 +277,7 @@ public class fSlimeController : MonoBehaviour
             spawnedsSlime.GetComponent<sSlimeController>().active = true;
             spawnedsSlime.GetComponent<sSlimeController>().hoverCell = wslimeCheck.hoverCell;
             GameManager.GetComponent<GameManager>().holding = false;
+            myAud.PlayOneShot(merge, 1F);
 
             Destroy(gameObject);
             Destroy(slime);
@@ -277,6 +290,7 @@ public class fSlimeController : MonoBehaviour
             spawnedlSlime.GetComponent<lSlimeController>().active = true;
             spawnedlSlime.GetComponent<lSlimeController>().hoverCell = eslimeCheck.hoverCell;
             GameManager.GetComponent<GameManager>().holding = false;
+            myAud.PlayOneShot(merge, 1F);
 
             Destroy(gameObject);
             Destroy(slime);
@@ -289,6 +303,7 @@ public class fSlimeController : MonoBehaviour
     IEnumerator ShootDelay()
     {
         yield return new WaitForSeconds(aspd);
+        
         canshoot = true;
     }
 
@@ -310,6 +325,7 @@ public class fSlimeController : MonoBehaviour
 
     public void takeDmg(int damage)
     {
+        myAud.PlayOneShot(hurt, 1F);
         hp -= damage;
         if (hp <= 0) 
         {
