@@ -5,6 +5,7 @@ using UnityEngine;
 public class CellManage : MonoBehaviour
 {
     public GameObject hover;
+    public Animator myAni;
     public bool filled = false;
     public bool steamed = false;
     public bool wet = false;
@@ -13,7 +14,7 @@ public class CellManage : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        myAni = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -40,54 +41,59 @@ public class CellManage : MonoBehaviour
     public void Steamed() {
         steamed = true;
         StartCoroutine(SteamTime());
-        this.GetComponent<SpriteRenderer>().color = Color.grey;
+        myAni.SetBool("steamTrail", true);
     }
 
     IEnumerator SteamTime()
     {
         yield return new WaitForSeconds(5);
         steamed = false;
-        this.GetComponent<SpriteRenderer>().color = Color.clear;
+        myAni.SetBool("steamTrail", false);
     }
     public void Wetted()
     {
         wet = true;
         StartCoroutine(WetTime());
-        this.GetComponent<SpriteRenderer>().color = Color.blue;
+        myAni.SetBool("waterTrail", true);
+
     }
 
     IEnumerator WetTime()
     {
         yield return new WaitForSeconds(5);
         wet = false;
-        this.GetComponent<SpriteRenderer>().color = Color.clear;
+        myAni.SetBool("waterTrail", false);
+
     }
 
-    public void Grassed()
-    {
-        grassed = true;
-        StartCoroutine(GrassTime());
-        this.GetComponent<SpriteRenderer>().color = Color.green;
-    }
-
-    IEnumerator GrassTime()
-    {
-        yield return new WaitForSeconds(5);
-        grassed = false;
-        this.GetComponent<SpriteRenderer>().color = Color.clear;
-    }
+   
 
     public void Burned()
     {
         burned = true;
         StartCoroutine(BurnTime());
-        this.GetComponent<SpriteRenderer>().color = Color.red;
+        myAni.SetBool("burnTrail", true);
     }
 
     IEnumerator BurnTime()
     {
         yield return new WaitForSeconds(5);
         burned = false;
-        this.GetComponent<SpriteRenderer>().color = Color.clear;
+        myAni.SetBool("burnTrail", false);
+    }
+
+    public void Grassed()
+    {
+        grassed = true;
+        StartCoroutine(GrassTime());
+        myAni.SetBool("plantTrail", true);
+
+    }
+
+    IEnumerator GrassTime()
+    {
+        yield return new WaitForSeconds(5);
+        grassed = false;
+        myAni.SetBool("plantTrail", false);
     }
 }

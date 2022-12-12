@@ -122,6 +122,10 @@ MonoBehaviour:
   shoot: {fileID: 8300000, guid: 06b8f5aebf68e47fe93544380920232b, type: 3}
   hurt: {fileID: 8300000, guid: 3134b846953a24514b74a55525da4a2e, type: 3}
   merge: {fileID: 8300000, guid: f49805ce694454e76aed86377fc99614, type: 3}
+  trash: {fileID: 8300000, guid: 444a8208ce31ce6418f0933f9235f093, type: 3}
+  die: {fileID: 8300000, guid: fe55e00c729861c4cb715981110e181f, type: 3}
+  buy: {fileID: 8300000, guid: 9f896fb4991d0fc41bdcac15fd28356b, type: 3}
+  buyfail: {fileID: 8300000, guid: b236ea79fecb4c54bb6aa865befd5311, type: 3}
 --- !u!82 &3634909255724296919
 AudioSource:
   m_ObjectHideFlags: 0

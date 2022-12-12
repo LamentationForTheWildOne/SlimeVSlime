@@ -6,11 +6,24 @@ using UnityEngine.SceneManagement;
 public class MainMenuScript : MonoBehaviour
 {
     public string sceneToLoad;
-
+    public AudioClip click;
+    public AudioSource myAud;
+    private void Start()
+    {
+        myAud = GetComponent<AudioSource>();
+    }
     public void ChangeScene()
     {
-        SceneManager.LoadScene(sceneToLoad);
+        myAud.PlayOneShot(click, 1f);
+        StartCoroutine(SceneDelay());
+        
 
+    }
+
+    IEnumerator SceneDelay()
+    {
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene(sceneToLoad);
     }
 
 }

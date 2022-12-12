@@ -12,6 +12,10 @@ public class GameManager : MonoBehaviour
     public GameObject eSlime;
     public GameObject mSlime;
     public GameObject spawnTile;
+
+    public GameObject[] slimes;
+
+    private List<GameObject> pool = new List<GameObject>();
     
     public GameObject convey;
     public int sSec = 5;
@@ -22,6 +26,10 @@ public class GameManager : MonoBehaviour
     private GameObject c83;
     private GameObject c84;
 
+    public AudioSource myAud;
+    public AudioClip waveSuc;
+    public AudioClip healthLoss;
+
     public TextMeshProUGUI tscore;
     public TextMeshProUGUI thealth;
     public TextMeshProUGUI tsb;
@@ -30,10 +38,21 @@ public class GameManager : MonoBehaviour
     public int score = 0;
     public int health = 5;
 
-    // Start is called before the first frame update
+    public int wave = 0;
+    public int leftToSpawn = 0;
+    private int spawnTime = 0;
+    private int xSpawn;
+
+
     public bool holding = false;
+    public bool trashing = false;
+
     void Start()
     {
+        wave = 1;
+        leftToSpawn = 10;
+        spawnTime = 6;
+        myAud = GetComponent<AudioSource>();
         convey = GameObject.Find("conveyor");
         c80 = GameObject.Find("Cell 8:0");
         c81 = GameObject.Find("Cell 8:1");
@@ -42,12 +61,13 @@ public class GameManager : MonoBehaviour
         c84 = GameObject.Find("Cell 8:4");
         StartCoroutine(SpawnDelay());
         StartCoroutine(SlimeDelay());
+ 
     }
 
     // Update is called once per frame
     void Update()
     {
-        tscore.text = ("Score: " + score.ToString());
+        tscore.text = ("Wave: " + wave.ToString());
         thealth.text = ("Health: " + health.ToString());
         tsb.text = ("Slime Bucks: " + slimeBux.ToString());
         if (health <= 0) {
@@ -57,54 +77,95 @@ public class GameManager : MonoBehaviour
 
     IEnumerator SpawnDelay()
     {
-        yield return new WaitForSeconds(sSec);
-        int x = Random.Range(1, 6);
-        if (x == 1) {
-            spawnTile = c80;
-        }
-        if (x == 2)
+        yield return new WaitForSeconds(spawnTime);
+        if (wave == 1)
         {
-            spawnTile = c81;
+            xSpawn = Random.Range(2, 5);
         }
-        if (x == 3)
-        {
-            spawnTile = c82;
+        else {
+            xSpawn = Random.Range(1, 6);
         }
-        if (x == 4)
-        {
-            spawnTile = c83;
-        }
-        if (x == 5)
-        {
-            spawnTile = c84;
+        switch (xSpawn) {
+            case 1:
+                spawnTile = c80;
+                break;
+            case 2:
+                spawnTile = c81;
+                break;
+            case 3:
+                spawnTile = c82;
+                break;
+            case 4:
+                spawnTile = c83;
+                break;
+            case 5:
+                spawnTile = c84;
+                break;
         }
 
-        SpawnMSlime();
-        StartCoroutine(SpawnDelay());
+        if (leftToSpawn > 0)
+        {
+            leftToSpawn -= 1;
+            SpawnMSlime();
+            StartCoroutine(SpawnDelay());
+        }
+        else {
+            myAud.PlayOneShot(waveSuc, 1F);
+            yield return new WaitForSeconds(10);
+            WaveAdvance();
+        }
+
+        
     }
 
     IEnumerator SlimeDelay()
     {
-        GameObject slimeType = null;
-        yield return new WaitForSeconds(goodsSec);
-        int x = Random.Range(1, 4);
         
-        if (x == 1)
-        {
-            slimeType = wSlime;
+        yield return new WaitForSeconds(goodsSec);
+        if (pool.Count == 0) {
+            pool.AddRange(slimes); 
         }
-        if (x == 2)
-        {
-            slimeType = fSlime;
-        }
-        if (x == 3)
-        {
-            slimeType = eSlime;
-        }
+        int index = Random.Range(0, pool.Count);
+        GameObject p = pool[index];
+        pool.RemoveAt(index);
 
-
-        SpawnFriendSlime(slimeType);
+        SpawnFriendSlime(p);
         StartCoroutine(SlimeDelay());
+    }
+
+    void WaveAdvance() {
+        
+        wave += 1;
+        switch (wave) {
+            case 2:
+                leftToSpawn = 12;
+                spawnTime = 5;
+                break;
+            case 3:
+                leftToSpawn = 20;
+                spawnTime = 4;
+                break;
+            case 4:
+                leftToSpawn = 20;
+                spawnTime = 1;
+                break;
+            case 5:
+                leftToSpawn = 24;
+                spawnTime = 5;
+                break;
+            case 6:
+                leftToSpawn = 30;
+                spawnTime = 3;
+                break;
+            case 7:
+                leftToSpawn = 35;
+                spawnTime = 1;
+                break;
+            case 8:
+                SceneManager.LoadScene("Good End");
+                break;
+        }
+        StartCoroutine(SpawnDelay());
     }
 
     void SpawnMSlime() {

@@ -31,6 +31,9 @@ public class pSlimeController : MonoBehaviour
     public AudioClip shoot;
     public AudioClip hurt;
 
+    public AudioClip trash;
+    public AudioClip die;
+
     // Start is called before the first frame update
 
     private void Awake()
@@ -200,6 +203,13 @@ public class pSlimeController : MonoBehaviour
 
 
                 }
+                if (GameManager.GetComponent<GameManager>().trashing && active)
+                {
+                    GameManager.GetComponent<GameManager>().slimeBux += 100;
+                    AudioSource.PlayClipAtPoint(trash, this.gameObject.transform.position);
+                    hoverCell.GetComponent<CellManage>().filled = false;
+                    Destroy(gameObject);
+                }
             }
 
         }
@@ -333,6 +343,7 @@ public class pSlimeController : MonoBehaviour
         myAud.PlayOneShot(hurt, 1F);
         if (hp <= 0)
         {
+            AudioSource.PlayClipAtPoint(die, this.gameObject.transform.position);
             hoverCell.GetComponent<CellManage>().filled = false;
             Destroy(gameObject);
         }

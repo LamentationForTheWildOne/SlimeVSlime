@@ -24,6 +24,7 @@ public class eMSlimeController : MonoBehaviour
     public GameObject hoverCell;
     public GameObject[] gos;
 
+    public GameObject vine;
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +33,7 @@ public class eMSlimeController : MonoBehaviour
         StartCoroutine(MoveDelay());
         StartCoroutine(DoT());
         myAud = GetComponent<AudioSource>();
+        vine = this.gameObject.transform.GetChild(0).gameObject;
     }
 
     // Update is called once per frame
@@ -109,7 +111,7 @@ public class eMSlimeController : MonoBehaviour
 
             if (collision.gameObject.TryGetComponent(out fBulletController fireBull)) 
             {
-                Bull = 2;
+                Bull = 3;
             } 
             
             if (collision.gameObject.TryGetComponent(out wBulletController waterBull))
@@ -119,7 +121,7 @@ public class eMSlimeController : MonoBehaviour
             
             if (collision.gameObject.TryGetComponent(out sBulletController steamBull))
             {
-                Bull = 1;
+                Bull = 2;
                 Debug.Log("steam");
             }
 
@@ -152,6 +154,7 @@ public class eMSlimeController : MonoBehaviour
     public void Root(int roottime) {
         
         canMove = false;
+        vine.SetActive(true);
         StartCoroutine(RootDelay(roottime));
     }
 
@@ -179,7 +182,8 @@ public class eMSlimeController : MonoBehaviour
     {
         yield return new WaitForSeconds(roottime);
         rooted = false;
-        
+        vine.SetActive(false);
+
     }
 
     IEnumerator MoveDelay()

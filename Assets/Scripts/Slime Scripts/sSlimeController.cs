@@ -26,6 +26,9 @@ public class sSlimeController : MonoBehaviour
     public AudioClip shoot;
     public AudioClip hurt;
 
+    public AudioClip trash;
+    public AudioClip die;
+
     private void Awake()
     {
         
@@ -191,6 +194,13 @@ public class sSlimeController : MonoBehaviour
 
 
                 }
+                if (GameManager.GetComponent<GameManager>().trashing && active)
+                {
+                    GameManager.GetComponent<GameManager>().slimeBux += 100;
+                    AudioSource.PlayClipAtPoint(trash, this.gameObject.transform.position);
+                    hoverCell.GetComponent<CellManage>().filled = false;
+                    Destroy(gameObject);
+                }
             }
 
         }
@@ -295,6 +305,7 @@ public class sSlimeController : MonoBehaviour
         myAud.PlayOneShot(hurt, 1F);
         if (hp <= 0)
         {
+            AudioSource.PlayClipAtPoint(die, this.gameObject.transform.position);
             hoverCell.GetComponent<CellManage>().filled = false;
             Destroy(gameObject);
         }

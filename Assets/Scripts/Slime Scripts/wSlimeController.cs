@@ -32,6 +32,11 @@ public class wSlimeController : MonoBehaviour
     public AudioClip hurt;
     public AudioClip merge;
 
+    public AudioClip trash;
+    public AudioClip die;
+    public AudioClip buy;
+    public AudioClip buyfail;
+
     // Start is called before the first frame update
 
     private void Awake()
@@ -177,7 +182,11 @@ public class wSlimeController : MonoBehaviour
                         held = true;
                         gameObject.layer = 1;
                         GameManager.GetComponent<GameManager>().holding = true;
-                        Debug.Log("click");
+                        myAud.PlayOneShot(buy, 0.5F);
+                    }
+                    else
+                    {
+                        myAud.PlayOneShot(buyfail, 1F);
                     }
 
 
@@ -209,6 +218,13 @@ public class wSlimeController : MonoBehaviour
                     }
 
 
+                }
+                if (GameManager.GetComponent<GameManager>().trashing && active)
+                {
+                    GameManager.GetComponent<GameManager>().slimeBux += 50;
+                    AudioSource.PlayClipAtPoint(trash, this.gameObject.transform.position);
+                    hoverCell.GetComponent<CellManage>().filled = false;
+                    Destroy(gameObject);
                 }
             }
 
@@ -294,7 +310,7 @@ public class wSlimeController : MonoBehaviour
             spawnedsSlime.GetComponent<sSlimeController>().active = true;
             spawnedsSlime.GetComponent<sSlimeController>().hoverCell = fslimeCheck.hoverCell;
             GameManager.GetComponent<GameManager>().holding = false;
-            myAud.PlayOneShot(merge, 1F);
+            AudioSource.PlayClipAtPoint(merge, this.gameObject.transform.position);
 
             Destroy(gameObject);
             Destroy(slime);
@@ -307,7 +323,7 @@ public class wSlimeController : MonoBehaviour
             spawnedpSlime.GetComponent<pSlimeController>().active = true;
             spawnedpSlime.GetComponent<pSlimeController>().hoverCell = eslimeCheck.hoverCell;
             GameManager.GetComponent<GameManager>().holding = false;
-            myAud.PlayOneShot(merge, 1F);
+            AudioSource.PlayClipAtPoint(merge, this.gameObject.transform.position);
 
             Destroy(gameObject);
             Destroy(slime);
@@ -370,6 +386,7 @@ public class wSlimeController : MonoBehaviour
         myAud.PlayOneShot(hurt, 1F);
         if (hp <= 0)
         {
+            AudioSource.PlayClipAtPoint(die, this.gameObject.transform.position);
             hoverCell.GetComponent<CellManage>().filled = false;
             Destroy(gameObject);
         }

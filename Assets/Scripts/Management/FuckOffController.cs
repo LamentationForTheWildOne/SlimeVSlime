@@ -21,6 +21,7 @@ public class FuckOffController : MonoBehaviour
     {
         if (col.CompareTag("Enemy")){
             GameManager.GetComponent<GameManager>().health -= 1;
+            GameManager.GetComponent<GameManager>().myAud.PlayOneShot(GameManager.GetComponent<GameManager>().healthLoss, 1F);
         } 
         Destroy(col.gameObject);
     }

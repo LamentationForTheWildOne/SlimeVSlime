@@ -18,7 +18,9 @@ public class eWallController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (maker == null) {
+            Destroy(gameObject);
+        }
     }
 
     private void FixedUpdate()

@@ -30,6 +30,9 @@ public class lSlimeController : MonoBehaviour
     public AudioClip shoot;
     public AudioClip hurt;
 
+    public AudioClip trash;
+    public AudioClip die;
+
     // Start is called before the first frame update
 
     private void Awake()
@@ -198,6 +201,13 @@ public class lSlimeController : MonoBehaviour
 
 
                 }
+                if (GameManager.GetComponent<GameManager>().trashing && active)
+                {
+                    GameManager.GetComponent<GameManager>().slimeBux += 100;
+                    AudioSource.PlayClipAtPoint(trash, this.gameObject.transform.position);
+                    hoverCell.GetComponent<CellManage>().filled = false;
+                    Destroy(gameObject);
+                }
             }
 
         }
@@ -330,12 +340,15 @@ public class lSlimeController : MonoBehaviour
         }
     }
 
+    
     public void takeDmg(int damage)
     {
         hp -= damage;
         myAud.PlayOneShot(hurt, 1F);
         if (hp <= 0)
         {
+
+            AudioSource.PlayClipAtPoint(die, this.gameObject.transform.position);
             hoverCell.GetComponent<CellManage>().filled = false;
             Destroy(gameObject);
         }
